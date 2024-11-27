@@ -1,22 +1,22 @@
-# Lighthouse
+# Faro
 
-## Overview
+## Descripción general
 
 {% hint style="info" %}
 [Lighthouse](https://github.com/sigp/lighthouse) is an Eth client with a heavy focus on speed and security. The team behind it, [Sigma Prime](https://sigmaprime.io), is an information security and software engineering firm who have funded Lighthouse along with the Ethereum Foundation, Consensys, and private individuals. Lighthouse is built in Rust and offered under an Apache 2.0 License.
 {% endhint %}
 
-#### Official Links
+#### Enlaces oficiales
 
-| Subject       | Links                                                                                      |
+| Asunto        | Enlaces                                                                                    |
 | ------------- | ------------------------------------------------------------------------------------------ |
-| Releases      | [https://github.com/sigp/lighthouse/releases](https://github.com/sigp/lighthouse/releases) |
-| Documentation | [https://lighthouse-book.sigmaprime.io](https://lighthouse-book.sigmaprime.io/)            |
-| Website       | [https://lighthouse.sigmaprime.io](https://lighthouse.sigmaprime.io/)                      |
+| Lanzamientos  | [https://github.com/sigp/lighthouse/releases](https://github.com/sigp/lighthouse/releases) |
+| Documentación | [https://lighthouse-book.sigmaprime.io](https://lighthouse-book.sigmaprime.io/)            |
+| Sitio web     | [https://lighthouse.sigmaprime.io](https://lighthouse.sigmaprime.io/)                      |
 
-### 1. Initial configuration
+### 1. Configuración inicial
 
-Create a service user for the consensus service, create data directory and assign ownership.
+Cree un usuario de servicio para el servicio de consenso, cree un directorio de datos y asigne propiedad.
 
 ```bash
 sudo adduser --system --no-create-home --group consensus
@@ -24,22 +24,22 @@ sudo mkdir -p /var/lib/lighthouse
 sudo chown -R consensus:consensus /var/lib/lighthouse
 ```
 
-Install dependencies.
+Instalar dependencias.
 
 ```bash
 sudo apt install curl jq ccze -y
 ```
 
-### 2. Install Binaries
+### 2. Instalar Binarios
 
-* Downloading binaries is often faster and more convenient.&#x20;
-* Building from source code can offer better compatibility and is more aligned with the spirit of FOSS (free open source software).
+* Descargar archivos binarios suele ser más rápido y cómodo.&#x20;
+* Construir a partir de código fuente puede ofrecer una mejor compatibilidad y está más alineado con el espíritu de FOSS (software gratuito de código abierto).
 
 <details>
 
-<summary>Option 1 - Download binaries</summary>
+<summary>Opción 1 - Descargar binarios</summary>
 
-Run the following to automatically download the latest linux release, un-tar and cleanup.
+Ejecute lo siguiente para descargar automáticamente la última versión de Linux, destar y limpiar.
 
 ```bash
 RELEASE_URL="https://api.github.com/repos/sigp/lighthouse/releases/latest"
@@ -56,7 +56,7 @@ tar -xzvf lighthouse.tar.gz -C $HOME
 rm lighthouse.tar.gz
 ```
 
-Install the binaries.
+Instalar los binarios.
 
 <pre class="language-bash"><code class="lang-bash"><strong>sudo mv $HOME/lighthouse /usr/local/bin/lighthouse
 </strong></code></pre>
@@ -65,15 +65,15 @@ Install the binaries.
 
 <details>
 
-<summary>Option 2 - Build from source code</summary>
+<summary>Opción 2 - Construir desde el código fuente</summary>
 
-**Install rust dependency**
+**Instalar dependencia de óxido**
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
-When prompted, enter '1' to proceed with the default install.
+Cuando se le solicite, ingrese '1' para continuar con la instalación predeterminada.
 
 Update your environment variables.
 
@@ -82,14 +82,14 @@ echo export PATH="$HOME/.cargo/bin:$PATH" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-Install rust dependencies.
+Instalar dependencias de óxido.
 
 ```bash
 sudo apt-get update
 sudo apt install -y git gcc g++ make cmake pkg-config libssl-dev libclang-dev clang protobuf-compiler
 ```
 
-Build the binaries.
+Construye los binarios.
 
 ```bash
 mkdir -p ~/git
@@ -99,7 +99,7 @@ cd lighthouse
 make
 ```
 
-In case of compilation errors, run the following sequence.
+En caso de errores de compilación, ejecute la siguiente secuencia.
 
 ```bash
 rustup update
@@ -107,13 +107,13 @@ cargo clean
 make
 ```
 
-Verify lighthouse was built properly by checking the version number.
+Verifique que el faro se haya construido correctamente comprobando el número de versión.
 
 ```
 lighthouse --version
 ```
 
-Install the binary.
+Instalar el binario.
 
 ```bash
 sudo cp $HOME/.cargo/bin/lighthouse /usr/local/bin/lighthouse
@@ -121,15 +121,15 @@ sudo cp $HOME/.cargo/bin/lighthouse /usr/local/bin/lighthouse
 
 </details>
 
-### **3. Setup and configure systemd**
+### **3. Instalar y configurar systemd**
 
-Create a **systemd unit file** to define your `consensus.service` configuration.
+Cree un **systemd unit file** para definir su `consensus.service` configuración.
 
 ```bash
 sudo nano /etc/systemd/system/consensus.service
 ```
 
-Paste the following configuration into the file.
+Pegue la siguiente configuración en el archivo.
 
 ```shell
 [Unit]
@@ -165,33 +165,33 @@ ExecStart=/usr/local/bin/lighthouse bn \
 WantedBy=multi-user.target
 ```
 
-To exit and save, press `Ctrl` + `X`, then `Y`, then `Enter`.
+Para salir y guardar, presione `Ctrl` + `X`, luego `Y`, luego `Enter`.
 
-Run the following to enable auto-start at boot time.
+Ejecute lo siguiente para habilitar el inicio automático en el momento del arranque.
 
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable consensus
 ```
 
-Finally, start your consensus layer client and check it's status.
+Finalmente, inicie su cliente de capa de consenso y verifique su estado.
 
 ```bash
 sudo systemctl start consensus
 sudo systemctl status consensus
 ```
 
-Press `Ctrl` + `C` to exit the status.
+Presione `Ctrl` + `C` para salir del estado.
 
-Check your logs to confirm that the consensus client is up and syncing.
+Verifique sus registros para confirmar que el cliente de consenso esté activo y sincronizándose.
 
 ```bash
 sudo journalctl -fu consensus | ccze
 ```
 
-Press `Ctrl` + `C` to exit the logs.
+Presione `Ctrl` + `C` para salir de los registros.
 
-### 4. Helpful consensus client commands
+### 4. Comandos útiles del cliente de consenso
 
 {% tabs %}
 {% tab title="View Logs" %}
@@ -199,7 +199,7 @@ Press `Ctrl` + `C` to exit the logs.
 sudo journalctl -fu consensus | ccze
 ```
 
-**Example of Synced Lighthouse Consensus Client Logs**
+**Ejemplo de registros de cliente de consenso de Lighthouse sincronizados**
 
 ```bash
 Feb 03 01:02:36.000 INFO New block received                      root: 0xb5ccb2f85d981ca9e1c0d904f967403ddf8c47532c195fe213c94a28ffaf6a2e, slot: 2138
@@ -226,11 +226,11 @@ sudo systemctl status consensus
 {% endtab %}
 
 {% tab title="Reset Database" %}
-Common reasons to reset the database can include:
+Las razones comunes para restablecer la base de datos pueden incluir:
 
-* To reduce disk space usage
-* To recover from a corrupted database due to power outage or hardware failure
-* To upgrade to a new storage format
+* Para reducir el uso de espacio en disco
+* Para recuperarse de una base de datos dañada debido a un corte de energía o una falla de hardware
+* Para actualizar a un nuevo formato de almacenamiento
 
 ```bash
 sudo systemctl stop consensus
@@ -238,13 +238,13 @@ sudo rm -rf /var/lib/lighthouse/beacon
 sudo systemctl restart consensus
 ```
 
-With checkpoint sync enabled, time to re-sync the consensus client should take only a minute or two.
+Con la sincronización de puntos de control habilitada, el tiempo para volver a sincronizar el cliente de consenso debería tomar solo uno o dos minutos.
 {% endtab %}
 {% endtabs %}
 
-Now that your consensus client is configured and started, you have a full node.
+Ahora que su cliente de consenso está configurado e iniciado, tiene un nodo completo.
 
-Proceed to the next step on setting up your validator client, which turns a full node into a staking node.
+Continúe con el siguiente paso para configurar su cliente validador, que convierte un nodo completo en un nodo de participación.
 
 {% hint style="info" %}
 If you wanted to setup a full node, not a staking node, stop here! Congrats on running your own full node! :tada:
