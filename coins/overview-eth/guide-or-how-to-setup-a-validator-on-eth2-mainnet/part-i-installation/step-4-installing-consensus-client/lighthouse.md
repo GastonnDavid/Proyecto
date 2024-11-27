@@ -3,7 +3,7 @@
 ## Descripción general
 
 {% hint style="info" %}
-[Lighthouse](https://github.com/sigp/lighthouse) is an Eth client with a heavy focus on speed and security. The team behind it, [Sigma Prime](https://sigmaprime.io), is an information security and software engineering firm who have funded Lighthouse along with the Ethereum Foundation, Consensys, and private individuals. Lighthouse is built in Rust and offered under an Apache 2.0 License.
+[Lighthouse](https://github.com/sigp/lighthouse) es un cliente de Eth con un gran enfoque en la velocidad y la seguridad. El equipo detrás de esto, [Sigma Prime](https://sigmaprime.io), es una empresa de ingeniería de software y seguridad de la información que ha financiado Lighthouse junto con la Fundación Ethereum, Consensys y particulares. Lighthouse está construido en Rust y se ofrece bajo una licencia Apache 2.0.
 {% endhint %}
 
 #### Enlaces oficiales
